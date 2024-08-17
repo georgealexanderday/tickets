@@ -27,7 +27,7 @@
 
 
         devShells.default = pkgs.mkShell {
-          nativeBuildInputs = with pkgs; [ beam.packages.erlang_27.elixir_1_17 mix2nix rabbitmq-server ];
+          nativeBuildInputs = with pkgs; [ beam.packages.erlang_26.elixir_1_17 mix2nix rabbitmq-server ];
 
 
 
