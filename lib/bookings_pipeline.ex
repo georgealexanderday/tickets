@@ -30,15 +30,17 @@ defmodule BookingsPipeline do
     else
       Broadway.Message.failed(message, "bookings-closed")
     end
-
-    message
   end
 
   def handle_failed(messages, _context) do
     IO.inspect(messages, label: "Failed messages")
 
-    Enum.map(messages, fn %{status: {:failed, "bookings-closed"}} = message ->
-      Broadway.Message.configure_ack(mes)
+    Enum.map(messages, fn
+      %{status: {:failed, "bookings-closed"}} = message ->
+        Broadway.Message.configure_ack(message, on_failure: :reject)
+
+      message ->
+        message
     end)
   end
 
@@ -46,7 +48,6 @@ defmodule BookingsPipeline do
     messages
     |> parse_messages()
     |> add_users()
-    |> dbg
   end
 
   defp parse_messages(messages) do
